@@ -1,0 +1,13 @@
+# Use the official MySQL image from the Docker Hub
+FROM mysql:latest
+
+# Install iputils-ping utility
+RUN apt-get update && apt-get install -y iputils-ping
+
+# Set environment variables
+ENV MYSQL_DATABASE=astonvilla
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_PASSWORD=root
+
+# Expose the MySQL port
+EXPOSE 3306

@@ -1,0 +1,43 @@
+pipeline {
+    agent any 
+    stages {
+        stage ("Clean up"){
+            steps {
+                 deleteDir()
+            }
+        }
+        stage('Checkout') {
+            steps {
+                sh 'git  clone https://github.com/Raouf-Rhimi/astonvilla-app.git'
+            }
+        }
+        stage ("run sonar server") {
+            steps {
+                 dir("astonvilla-app"){
+                    sh "docker-compose -f sonar-docker-compose.yaml up -d"
+                }                
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube Server') {
+                    sh 'sonar-scanner'
+                }
+            }
+        }
+        stage ("Generate docker image") {
+            steps {
+                 dir("astonvilla-app"){
+                    sh "docker build -t kakachisensei/astonvilla-app:1.1.${env.BUILD_NUMBER} ."
+                }                
+            }
+        }
+        stage ("push docker image") {
+            steps {
+                 dir("astonvilla-app"){
+                    sh "docker push kakachisensei/astonvilla-app:1.1.${env.BUILD_NUMBER}"
+                }                
+            }
+        }
+    }
+}
