@@ -59,9 +59,9 @@ jobs:
         with:
           registry: ghcr.io                    # GHCR registry URL
           username: ${{ github.repository_owner }}  # Username for GHCR (typically the repository owner)
-          password: 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     # Access token for GHCR (stored as a secret)
+          password: ${{ secrets.GITHUB_TOKEN }}     # Access token for GHCR (stored as a secret)
 
-      # Build and push the Docker image
+# Build and push the Docker image
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
