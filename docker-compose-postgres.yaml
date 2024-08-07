@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      my_network:
+        ipv4_address: 172.27.240.4
+
+volumes:
+  postgres_data:
+networks:
+
+  my_network:
+    ipam:
+      config:
+        - subnet: 172.27.240.0/24
