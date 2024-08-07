@@ -5,10 +5,7 @@ on:
   push:
     tags:
       - "v*.*.*"
-  # Optionally, uncomment the lines below to trigger the workflow on pull requests to the master branch
-  # pull_request:
-  #   branches:
-  #     - "master"
+
 
 jobs:
   docker:
