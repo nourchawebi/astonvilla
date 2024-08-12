@@ -34,7 +34,8 @@ jobs:
               -v sonarqube_logs:/opt/sonarqube/logs \
               --net sonarnet \
               sonarqube:9.9.1-community
-
+      - name: Check running containers
+        run: docker ps
       - name: Wait for SonarQube to be fully up
         run: |
             echo "Waiting for SonarQube to be up on localhost:9000..."
