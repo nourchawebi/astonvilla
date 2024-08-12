@@ -22,7 +22,7 @@ jobs:
       - name: Check running containers
         run: docker ps
       - name: Check SonarQube logs
-        run: docker-compose logs sonarqube
+        run: docker-compose logs
       - name: Execute tests in the running services
         run: |
             docker-compose exec sonarqube bin/bash
