@@ -13,46 +13,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Install Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
-#      - name: Run docker-compose
-#        uses: hoverkraft-tech/compose-action@v2.0.1
-#        with:
-#          compose-file: "./sonar-docker-compose.yaml"
-      - name: Create Docker network
-        run: docker network create sonarnet
-      - name: Run SonarQube
-        run: |
-            docker run -d \
-              --name sonarqube \
-              -p 9000:9000 \
-              -e SONAR_JDBC_URL=jdbc:postgresql://sonar-postgres:5432/sonarqube \
-              -e SONAR_JDBC_USERNAME=sonarqube \
-              -e SONAR_JDBC_PASSWORD=sonarqube \
-              -v sonarqube_data:/opt/sonarqube/data \
-              -v sonarqube_extensions:/opt/sonarqube/extensions \
-              -v sonarqube_logs:/opt/sonarqube/logs \
-              --net sonarnet \
-              sonarqube:9.9.1-community
-      - name: Check running containers
-        run: docker ps
-      - name: Wait for SonarQube to be fully up
-        run: |
-            echo "Waiting for SonarQube to be up on localhost:9000..."
-            until curl -s http://sonarqube:9000/api/system/status  | grep -q '"status":"UP"'; do
-              echo "SonarQube is not up yet. Waiting..."
-              sleep 30
-            done
-            echo "SonarQube is up and running!"
-
-      - name: Analyze with SonarQube
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on SonarQube, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
-          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}   # Add the URL of your instance to the variables of this repo with the name SONAR_HOST_URL (Settings > Secrets > Actions > add new repository secret)
-          SONAR_PROJECT_KEY: "astonvillatest"
-
-
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
