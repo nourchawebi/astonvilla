@@ -32,6 +32,20 @@ jobs:
       - name: Run SonarQube server
         run: |
           docker-compose -f sonar-docker-compose.yaml up -d
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: Wait for SonarQube to be ready
+        run: |
+            for i in {1..30}; do
+              if curl -s http://localhost:9000/api/system/health | grep -q '"status":"UP"'; then
+                echo "SonarQube is up!"
+                exit 0
+              fi
+              echo "Waiting for SonarQube..."
+              sleep 10
+            done
+            echo "SonarQube did not start in time."
+            exit 1
       - name: Analyze with SonarQube
         uses: sonarsource/sonarqube-scan-action@master
         env:
