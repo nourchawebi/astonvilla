@@ -19,6 +19,8 @@ jobs:
 #        uses: hoverkraft-tech/compose-action@v2.0.1
 #        with:
 #          compose-file: "./sonar-docker-compose.yaml"
+      - name: Create Docker network
+        run: docker network create sonarnet
       - name: Run SonarQube
         run: |
             docker run -d \
@@ -30,7 +32,7 @@ jobs:
               -v sonarqube_data:/opt/sonarqube/data \
               -v sonarqube_extensions:/opt/sonarqube/extensions \
               -v sonarqube_logs:/opt/sonarqube/logs \
-
+              --net sonarnet \
               sonarqube:9.9.1-community
 
       - name: Wait for SonarQube to be fully up
