@@ -19,6 +19,12 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./sonar-docker-compose.yaml"
+      - name: Wait for SonarQube to be fully up
+        run: |
+            while ! docker-compose exec sonarqube curl -s http://localhost:9000/api/system/status | grep -q '"status":"UP"'; do
+              echo "Waiting for SonarQube to be up..."
+              sleep 10
+            done
       - name: Execute tests in the running services
         run: |
             docker-compose exec sonarqube bin/bash
