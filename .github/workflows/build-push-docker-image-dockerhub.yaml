@@ -39,7 +39,7 @@ jobs:
       - name: Wait for SonarQube to be fully up
         run: |
             echo "Waiting for SonarQube to be up on localhost:9000..."
-            until curl -s http://localhost:9000/api/system/status | grep -q '"status":"UP"'; do
+            until curl -s http://127.0.0.1:9000/api/system/status  | grep -q '"status":"UP"'; do
               echo "SonarQube is not up yet. Waiting..."
               sleep 30
             done
