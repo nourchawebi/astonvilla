@@ -1,0 +1,9 @@
+version: 2
+tunnels:
+  sonar:
+    addr: http://sonar:9000
+    proto: http
+    schemes:
+      - https
+      - http
+    domain: ape-precious-squid.ngrok-free.app

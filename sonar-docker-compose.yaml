@@ -1,12 +1,11 @@
-version: "3"
-
 services:
-  sonarqube:
+
+  sonar:
     image: sonarqube
     ports:
       - "9000:9000"
     networks:
-      - sonarnet
+      - sonar
     environment:
       - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
     volumes:
@@ -19,17 +18,31 @@ services:
   db:
     image: postgres
     networks:
-      - sonarnet
+      - sonar
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
     volumes:
       - postgresql1:/var/lib/postgresql
       - postgresql_data1:/var/lib/postgresql/data
+  ngrok:
+    image: ngrok/ngrok:latest
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    ports:
+      - 4040:4040
+    volumes:
+      - ./ngrok.yml:/etc/ngrok.yml
+    networks:
+      - sonar
 
 networks:
-  sonarnet:
-    driver: bridge
+  sonar:
 
 volumes:
   sonarqube_conf1:
@@ -38,4 +51,5 @@ volumes:
   sonarqube_bundled-plugins1:
   postgresql1:
   postgresql_data1:
-
+  sonarqube_extensions:
+    external: false
