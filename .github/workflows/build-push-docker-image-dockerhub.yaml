@@ -1,6 +1,9 @@
 name: Build and Push Docker image to Docker Hub
 
 on: push
+#on:
+#  push:
+#    branches: [ "main" ]
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -21,3 +24,8 @@ jobs:
           context: .
           push: true
           tags: nourchawebi/astonvilla:1.1.${{ github.run_number }}
+      - name: Analyze with SonarQube
+        uses: SonarSource/sonarqube-scan-action@v2.0.1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on SonarQube, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}   # Add the URL of your instance to the variables of this repo with the name SONAR_HOST_URL (Settings > Secrets > Actions > add new repository secret)
