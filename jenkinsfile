@@ -1,47 +1,10 @@
 pipeline {
     agent any
-    environment {
-    		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
-    	}
     stages {
-        stage ("Clean up"){
+        stage('Greeting') {
             steps {
-                 deleteDir()
-            }
-        }
-        stage('Checkout') {
-            steps {
-              git url: 'https://github.com/nourchawebi/astonvilla.git'
-            }
-        }
-
-        stage ("Generate docker image") {
-            steps {
-                sh "docker build -t nourchawebi/astonvilla-app:1.1.${env.BUILD_NUMBER} ."
-            }
-        }
-        stage('Login') {
-
-        			steps {
-        				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        			}
-        		}
-
-        stage ("push docker image") {
-            steps {
-              sh "docker push nourchawebi/astonvilla-app:1.1.${env.BUILD_NUMBER}"
+                sh 'echo "Hello we are creating a pipeline for astonvilla App!"'
             }
         }
     }
 }
-// pipeline {
-//     agent any
-//     stages {
-//         stage('Greeting') {
-//             steps {
-//                 sh 'echo "Hello we are creating a pipeline for astonvilla App!"'
-//             }
-//         }
-//     }
-// }
-
