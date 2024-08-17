@@ -17,7 +17,7 @@ stage("chekout"){
 }
 stage("generate docker image")
 {
-steps { sh "docker build -t nourchawebi/astonvilla-app:1.1.${env.BUILD_NUMBER} ." }
+steps { sh "docker build -t nourchawebi/astonvilla:1.1.${env.BUILD_NUMBER} ." }
 }
 stage ("login")
 {
