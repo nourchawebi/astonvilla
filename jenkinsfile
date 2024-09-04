@@ -22,6 +22,12 @@ stage("generate docker image")
 {
 steps { sh "docker build -t nourchawebi/astonvilla:1.1.${env.BUILD_NUMBER} ." }
 }
+    stage('Docker Image Scan') {
+            steps {
+                sh "trivy image --format table -o trivy-image-report.html nourchawebi/astonvilla:1.1.${env.BUILD_NUMBER} "
+            }
+        }
+        
 stage ("login")
 {
 	steps {	sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
@@ -39,7 +45,13 @@ stage('File System Scan') {
                 sh "trivy fs --format table -o trivy-fs-report.html ."
             }
         }
-        
+   stage('OWASP SCAN') {
+    steps {
+        dependencyCheck additionalArguments: '', odcInstallation: 'DP-check'
+        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+    }
+}
+  
 stage('SonarQube Analysis') {
             steps {
               withCredentials([ string(credentialsId: 'sonarqube-url', variable: 'SONARQUBE_HOST_URL'), 
