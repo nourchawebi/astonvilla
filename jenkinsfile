@@ -47,7 +47,7 @@ stage('File System Scan') {
         }
    stage('OWASP SCAN') {
     steps {
-        dependencyCheck additionalArguments: '', odcInstallation: 'DP-check'
+        dependencyCheck additionalArguments: '', odcInstallation: 'DP-CHECK'
         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
     }
 }
