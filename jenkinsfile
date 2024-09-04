@@ -42,7 +42,7 @@ steps{
                     -Dsonar.projectKey=astonvillaJenkins'''
             }
         }
-}
+}}
 // pipeline {
 //     agent any
 //     stages {
