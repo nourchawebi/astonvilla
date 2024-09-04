@@ -78,7 +78,7 @@ string(credentialsId: 'sonarqube-login', variable: 'SONARQUBE_LOGIN') ]) {
 // pipeline {
 //     agent any
 //     stages {
-//         stage('Greeting') {
+//         stage('Greetingg') {
 //             steps {
 //                 sh 'echo "Hello we are creating a pipeline for astonvilla App!"'
 //             }
