@@ -40,10 +40,10 @@ stage('SonarQube Analysis') {
               
                     sh '''$SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.login=${SONARQUBE_LOGIN_TOKEN_JENKINS} \
+                        -Dsonar.login=${SONAR_TOKEN_JENKINS} \
                         -Dsonar.projectName=astonvillaJenkins \
                         -Dsonar.java.binaries=. \
-                        -Dsonar.projectKey=astonvillaJenkins'''
+                        -Dsonar.projectKey=astonvillaJenkins '''
                 
             }
         }
