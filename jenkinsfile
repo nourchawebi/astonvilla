@@ -34,19 +34,34 @@ steps{
 }
 
 }
+stage('File System Scan') {
+            steps {
+                sh "trivy fs --format table -o trivy-fs-report.html ."
+            }
+        }
+        
 stage('SonarQube Analysis') {
             steps {
               withCredentials([ string(credentialsId: 'sonarqube-url', variable: 'SONARQUBE_HOST_URL'), 
 string(credentialsId: 'sonarqube-login', variable: 'SONARQUBE_LOGIN') ]) { 
                     sh '''$SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.host.url=${SONARQUBE_HOST_URL} \
-                        -Dsonar.login=${SONARQUBE_LOGIN} \
+                        -Dsonar.token=${SONARQUBE_LOGIN} \
                         -Dsonar.projectName=astonvillaJenkins \
                         -Dsonar.java.binaries=. \
                         -Dsonar.projectKey=astonvillaJenkins '''   }
                 
             }
         }
+
+ stage('Quality Gate') {
+            steps {
+                script {
+                  waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-login' 
+                }
+            }
+        }
+        
 }}
 // pipeline {
 //     agent any
