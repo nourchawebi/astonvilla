@@ -2,6 +2,9 @@ pipeline {
  environment {
     		DOCKERHUB_CREDENTIALS=credentials('docker')
         SCANNER_HOME = tool 'sonar-scanner'
+//when i want t oaccess the github secrets
+ SONAR_HOST_URL = "${env.SONAR_HOST_URL}"
+        SONARQUBE_LOGIN_TOKEN_JENKINS = "${env.SONARQUBE_LOGIN_TOKEN_JENKINS}"
     	}
     agent any
 stages{
@@ -32,14 +35,16 @@ steps{
 }
 
 }
- stage('SonarQube Analysis') {
+stage('SonarQube Analysis') {
             steps {
-                sh '''$SCANNER_HOME/bin/sonar-scanner \
-                    -Dsonar.host.url=https://ape-precious-squid.ngrok-free.app/ \
-                    -Dsonar.login=squ_74b511bc7fe3a13df5c9be17e604d793c1e690e2 \
-                    -Dsonar.projectName=astonvillaJenkins \
-                    -Dsonar.java.binaries=. \
-                    -Dsonar.projectKey=astonvillaJenkins'''
+              
+                    sh '''$SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=${SONARQUBE_LOGIN_TOKEN_JENKINS} \
+                        -Dsonar.projectName=astonvillaJenkins \
+                        -Dsonar.java.binaries=. \
+                        -Dsonar.projectKey=astonvillaJenkins'''
+                
             }
         }
 }}
