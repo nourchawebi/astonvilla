@@ -1,6 +1,7 @@
 pipeline {
  environment {
     		DOCKERHUB_CREDENTIALS=credentials('docker')
+        SCANNER_HOME = tool 'sonar-scanner'
     	}
     agent any
 stages{
@@ -27,9 +28,28 @@ stage ("login")
 stage ("push")
 {
 steps{
- sh " docker push  nourchawebi/astonvilla-app:1.1.${env.BUILD_NUMBER}"
+ sh " docker push  nourchawebi/astonvilla:1.1.${env.BUILD_NUMBER}"
 }
 
 }
+ stage('SonarQube Analysis') {
+            steps {
+              sh ' $ SCANNER_HOME/bin/sonar-scanner -Dsonar.url=https://ape-precious-squid.ngrok-free.app/
+-Dsonar.login=squ_74b511bc7fe3a13df5c9be17e604d793c1e690e2
+-Dsonar.projectName=asontvillaJenkins
+-Dsonar.java.binaries = . \ 
+-Dsonar.projectKey=asontvillaJenkins '
+            }
 }
 }
+// pipeline {
+//     agent any
+//     stages {
+//         stage('Greeting') {
+//             steps {
+//                 sh 'echo "Hello we are creating a pipeline for astonvilla App!"'
+//             }
+//         }
+//     }
+// }
+
