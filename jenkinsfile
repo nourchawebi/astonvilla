@@ -42,35 +42,6 @@ steps{
 
 }
 
- stage ("clone gitops repo") {
-            steps {
-              sh "git clone https://github.com/nourchawebi/argocd.git"
-            }
-        }
-        stage ("change image tag") {
-            steps {
-             dir('argocd/astonvilla-app'){
-                script{
-                  def deployment = readFile('deployment.yaml')
-                  def updatedDeployment = deployment.replaceAll(/astonvilla-app:\s*[\w.-]+/, "astonvilla-app:1.1.${env.BUILD_NUMBER}")
-                  writeFile file: 'deployment.yaml', text: updatedDeployment
-                }
-              }
-            }
-        }
-         stage ("commit changes") {
-            steps {
-            dir('argocd/astonvilla-app'){
-                script{
-                      sh 'git config user.email "jenkins@agent.com"'
-                      sh 'git config user.name "jenkins-admin"'
-                      sh 'git add deployment.yaml'
-                      sh 'git commit -m "updated image tag"'
-                      sh 'git push https://nourchawebi:${GITHUB_TOKEN}@github.com/nourchawebi/argocd.git main'
-                }
-              }
-            }
-        }
 //stage('File System Scan') {
           //  steps {
            //     sh "trivy fs --format table -o trivy-fs-report.html ."
