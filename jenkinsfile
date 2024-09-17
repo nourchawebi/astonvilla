@@ -109,7 +109,7 @@ steps{
 // pipeline {
 //     agent any
 //     stages {
-//         stage('Greeting') {
+//         stage('Greetingg') {
 //             steps {
 //                 sh 'echo "Hello we are creating a pipeline for astonvilla App!"'
 //             }
