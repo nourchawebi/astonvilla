@@ -69,7 +69,7 @@ steps{
 // stage('Quality Gate') {
           //  steps {
              //   script {
-                  waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-login' 
+               //  waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-login' 
              //   }
            // }
       //  }
