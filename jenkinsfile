@@ -22,11 +22,11 @@ stage("generate docker image")
 {
 steps { sh "docker build -t nourchawebi/astonvilla:1.1.${env.BUILD_NUMBER} ." }
 }
-    stage('Docker Image Scan') {
-            steps {
-                sh "trivy image --format table -o trivy-image-report.html nourchawebi/astonvilla:1.1.${env.BUILD_NUMBER} "
-            }
-        }
+ //   stage('Docker Image Scan') {
+        //    steps {
+        //        sh "trivy image --format table -o trivy-image-report.html nourchawebi/astonvilla:1.1.${env.BUILD_NUMBER} "
+       //     }
+    //    }
         
 stage ("login")
 {
@@ -40,39 +40,39 @@ steps{
 }
 
 }
-stage('File System Scan') {
-            steps {
-                sh "trivy fs --format table -o trivy-fs-report.html ."
-            }
-        }
-   stage('OWASP SCAN') {
-    steps {
-        dependencyCheck additionalArguments: '', odcInstallation: 'DP-CHECK'
-        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-    }
-}
+//stage('File System Scan') {
+          //  steps {
+           //     sh "trivy fs --format table -o trivy-fs-report.html ."
+         //   }
+    //    }
+//   stage('OWASP SCAN') {
+  //  steps {
+      //  dependencyCheck additionalArguments: '', odcInstallation: 'DP-CHECK'
+      //  dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+   // }
+//}
   
-stage('SonarQube Analysis') {
-            steps {
-              withCredentials([ string(credentialsId: 'sonarqube-url', variable: 'SONARQUBE_HOST_URL'), 
-string(credentialsId: 'sonarqube-login', variable: 'SONARQUBE_LOGIN') ]) { 
-                    sh '''$SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.host.url=${SONARQUBE_HOST_URL} \
-                        -Dsonar.token=${SONARQUBE_LOGIN} \
-                        -Dsonar.projectName=astonvillaJenkins \
-                        -Dsonar.java.binaries=. \
-                        -Dsonar.projectKey=astonvillaJenkins '''   }
+//stage('SonarQube Analysis') {
+          //  steps {
+             // withCredentials([ string(credentialsId: 'sonarqube-url', variable: 'SONARQUBE_HOST_URL'), 
+//string(credentialsId: 'sonarqube-login', variable: 'SONARQUBE_LOGIN') ]) { 
+                //    sh '''$SCANNER_HOME/bin/sonar-scanner \
+                     //   -Dsonar.host.url=${SONARQUBE_HOST_URL} \
+                     //   -Dsonar.token=${SONARQUBE_LOGIN} \
+                     //   -Dsonar.projectName=astonvillaJenkins \
+                     //   -Dsonar.java.binaries=. \
+                     //   -Dsonar.projectKey=astonvillaJenkins '''   }
                 
-            }
-        }
+          //  }
+     //   }
 
- stage('Quality Gate') {
-            steps {
-                script {
+// stage('Quality Gate') {
+          //  steps {
+             //   script {
                   waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-login' 
-                }
-            }
-        }
+             //   }
+           // }
+      //  }
         
 }}
 // pipeline {
