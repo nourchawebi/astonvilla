@@ -85,11 +85,7 @@ steps{
 
 
 
-stage('File System Scan') {
-          steps {
-                sh "trivy fs --format table -o trivy-fs-report.html ."
-            }
-        }
+
   stage('OWASP SCAN') {
     steps {
         dependencyCheck additionalArguments: '', odcInstallation: 'DP-CHECK'
