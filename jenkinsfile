@@ -55,8 +55,8 @@ steps{
 dir('argocd/astonvilla-app'){
 script{
 def deployment = readFile('astonvilla-deployment.yaml')
-def updatedDeployment = deployment.replaceAll(/astonvilla-app:\s*[\w.-]+/, "astonvilla-app:1.1.${env.BUILD_NUMBER}"
-writeFile file : 'astonvilla-deployment.yaml' , text: updatedDeployment)
+def updatedDeployment = deployment.replaceAll(/astonvilla-app:\s*[\w.-]+/, "astonvilla-app:1.1.${env.BUILD_NUMBER}")
+writeFile file : 'astonvilla-deployment.yaml' , text: updatedDeployment
 }
 }
 }
